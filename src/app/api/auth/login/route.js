@@ -1,7 +1,8 @@
-import { prisma } from "../../../../lib/prisma";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { prisma } from "../../../../lib/prisma";
 
 export async function POST(req) {
   try {
@@ -35,16 +36,31 @@ export async function POST(req) {
     }
 
     const token = jwt.sign(
-      { id: user.id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+  { id: user.id, role: user.role },
+  process.env.JWT_SECRET,
+  { expiresIn: "365d" }
+);
+
+    const cookieStore = await cookies();
+
+    cookieStore.set("token", token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict",
+  path: "/",
+  maxAge: 60 * 60 * 24 * 365,
+});
 
     return NextResponse.json({
       message: "Login successful",
-      token,
-      user,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
+
   } catch (error) {
     return NextResponse.json(
       { error: error.message },

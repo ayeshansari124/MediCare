@@ -12,7 +12,8 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      Role
+  phone     String
+  role      Role     @default(PATIENT)
   createdAt DateTime @default(now())
 
   doctor    Doctor?
