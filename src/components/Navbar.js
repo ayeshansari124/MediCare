@@ -18,7 +18,7 @@ export default function Navbar() {
               <Stethoscope className="text-white w-5 h-5" />
             </div>
             <span className="text-2xl font-bold text-gray-800">
-              Medi<span className="text-teal-600">cure</span>
+              Al-Moin<span className="text-teal-600"> Hospital</span>
             </span>
           </Link>
 
