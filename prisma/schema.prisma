@@ -9,45 +9,61 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid())
-  name      String
   email     String   @unique
   password  String
-  phone     String
-  role      Role     @default(PATIENT)
+  role      Role
   createdAt DateTime @default(now())
 
-  doctor    Doctor?
   patient   Patient?
-}
-
-model Doctor {
-  id             String   @id @default(uuid())
-  userId         String   @unique
-  specialization String
-  experience     Int
-  available      Boolean  @default(true)
-
-  user           User     @relation(fields: [userId], references: [id])
-  appointments   Appointment[]
+  doctor    Doctor?
 }
 
 model Patient {
   id        String   @id @default(uuid())
   userId    String   @unique
 
+  name      String
+  gender    Gender
+  dob       DateTime
+  phone     String
+  address   String
+
   user      User     @relation(fields: [userId], references: [id])
   appointments Appointment[]
 }
 
-model Appointment {
-  id        String   @id @default(uuid())
-  doctorId  String
-  patientId String
-  date      DateTime
-  status    AppointmentStatus @default(PENDING)
+model Doctor {
+  id           String   @id @default(uuid())
+  userId       String   @unique
 
-  doctor    Doctor   @relation(fields: [doctorId], references: [id])
-  patient   Patient  @relation(fields: [patientId], references: [id])
+  name         String
+  gender       Gender
+  degree       String
+  specialization String
+  experience   Int
+  fees         Float
+  about        String
+  phone        String
+  profileImage String?
+  available    Boolean  @default(true)
+
+  user         User     @relation(fields: [userId], references: [id])
+  appointments Appointment[]
+}
+
+model Appointment {
+  id         String   @id @default(uuid())
+  patientId  String
+  doctorId   String
+
+  bookingTime DateTime
+  amount      Float
+  status      AppointmentStatus @default(PENDING)
+
+  patient     Patient @relation(fields: [patientId], references: [id])
+  doctor      Doctor  @relation(fields: [doctorId], references: [id])
+
+  createdAt   DateTime @default(now())
 }
 
 enum Role {
@@ -56,8 +72,15 @@ enum Role {
   PATIENT
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
 enum AppointmentStatus {
   PENDING
-  COMPLETED
+  CONFIRMED
   CANCELLED
+  COMPLETED
 }

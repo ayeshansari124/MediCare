@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function LoginModal({
@@ -11,6 +12,7 @@ export default function LoginModal({
   switchToRegister,
 }) {
   const { fetchUser } = useAuth();
+  const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,10 +45,20 @@ export default function LoginModal({
       await fetchUser();
 
       toast.success("Logged in successfully");
+
       onClose();
 
       setEmail("");
       setPassword("");
+
+      // ROLE BASED REDIRECT
+      if (data.user.role === "ADMIN") {
+        router.push("/admin");
+      } else if (data.user.role === "DOCTOR") {
+        router.push("/doctor");
+      } else {
+        router.push("/");
+      }
 
     } catch (error) {
       toast.error(error.message);
@@ -57,18 +69,17 @@ export default function LoginModal({
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
-
       <div className="relative bg-white w-[400px] rounded-2xl shadow-2xl p-8">
 
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
         >
           <X size={20} />
         </button>
 
         <div className="mb-6 text-center">
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-2xl font-semibold text-gray-800">
             Welcome Back
           </h2>
           <p className="text-sm text-gray-500 mt-1">
@@ -81,7 +92,7 @@ export default function LoginModal({
           <input
             type="email"
             placeholder="Email"
-            className="w-full px-4 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-4 py-2 bg-gray-100 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -89,7 +100,7 @@ export default function LoginModal({
           <input
             type="password"
             placeholder="Password"
-            className="w-full px-4 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-4 py-2 bg-gray-100 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

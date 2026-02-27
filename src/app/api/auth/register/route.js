@@ -6,9 +6,25 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { name, email, password, phone } = await req.json();
+    const {
+      name,
+      gender,
+      dob,
+      phone,
+      address,
+      email,
+      password,
+    } = await req.json();
 
-    if (!name || !email || !password || !phone) {
+    if (
+      !name ||
+      !gender ||
+      !dob ||
+      !phone ||
+      !address ||
+      !email ||
+      !password
+    ) {
       return NextResponse.json(
         { message: "All fields are required" },
         { status: 400 }
@@ -30,22 +46,28 @@ export async function POST(req) {
 
     const user = await prisma.user.create({
       data: {
-        name,
         email,
         password: hashedPassword,
-        phone,
         role: "PATIENT",
         patient: {
-          create: {},
+          create: {
+            name,
+            gender,
+            dob: new Date(dob),
+            phone,
+            address,
+          },
         },
+      },
+      include: {
+        patient: true,
       },
     });
 
-    // 🔐 Generate token immediately
     const token = jwt.sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "365d" } // very long expiry
+      { expiresIn: "365d" }
     );
 
     const cookieStore = await cookies();
@@ -55,16 +77,16 @@ export async function POST(req) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       path: "/",
-      maxAge: 60 * 60 * 24 * 365, // 1 year
+      maxAge: 60 * 60 * 24 * 365,
     });
 
     return NextResponse.json({
-      message: "Registered and logged in successfully",
+      message: "Registered & logged in",
       user: {
         id: user.id,
-        name: user.name,
         email: user.email,
         role: user.role,
+        patient: user.patient,
       },
     });
 

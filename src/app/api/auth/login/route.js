@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { prisma } from "../../../../lib/prisma";
+import { signToken } from "../../../../lib/jwt";
 
 export async function POST(req) {
   try {
@@ -10,7 +10,7 @@ export async function POST(req) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { message: "All fields are required" },
+        { message: "Email and password are required" },
         { status: 400 }
       );
     }
@@ -35,35 +35,34 @@ export async function POST(req) {
       );
     }
 
-    const token = jwt.sign(
-  { id: user.id, role: user.role },
-  process.env.JWT_SECRET,
-  { expiresIn: "365d" }
-);
+    const token = await signToken({
+      id: user.id,
+      role: user.role,
+    });
 
     const cookieStore = await cookies();
 
     cookieStore.set("token", token, {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "strict",
-  path: "/",
-  maxAge: 60 * 60 * 24 * 365,
-});
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+    });
 
     return NextResponse.json({
       message: "Login successful",
       user: {
         id: user.id,
-        name: user.name,
         email: user.email,
         role: user.role,
       },
     });
 
   } catch (error) {
+    console.error("LOGIN ERROR:", error);
     return NextResponse.json(
-      { error: error.message },
+      { message: "Something went wrong" },
       { status: 500 }
     );
   }

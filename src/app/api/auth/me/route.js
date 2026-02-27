@@ -1,7 +1,8 @@
-import { prisma } from "../../../../lib/prisma";
-import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+
+import { prisma } from "../../../../lib/prisma";
+import { verifyToken } from "../../../../lib/jwt";
 
 export async function GET() {
   try {
@@ -12,15 +13,13 @@ export async function GET() {
       return NextResponse.json({ user: null }, { status: 401 });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = await verifyToken(token);
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
+      include: {
+        patient: true,
+        doctor: true,
       },
     });
 
