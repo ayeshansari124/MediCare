@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Stethoscope } from "lucide-react";
+import { Stethoscope, LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 export default function AdminNavbar() {
@@ -25,12 +25,12 @@ export default function AdminNavbar() {
                         </span>
                     </Link>
 
-                    {/* Logout */}
+                    {/* ✅ LOGOUT ICON ONLY */}
                     <button
                         onClick={logout}
-                        className="px-3 py-1.5 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600"
+                        className="p-2 rounded-lg hover:bg-red-50 transition"
                     >
-                        Logout
+                        <LogOut className="w-7 h-7 text-red-500" />
                     </button>
 
                 </div>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Stethoscope } from "lucide-react";
+import { Stethoscope, LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import LoginModal from "./modals/LoginModal";
 import RegisterModal from "./modals/RegisterModal";
@@ -22,7 +22,6 @@ export default function Navbar() {
 
         <div className="max-w-7xl mx-auto px-4">
 
-          {/* Top Row */}
           <div className="flex items-center justify-between py-4">
 
             {/* Logo */}
@@ -38,7 +37,7 @@ export default function Navbar() {
 
             </Link>
 
-            {/* Auth Section */}
+            {/* Auth */}
             <div className="flex items-center gap-4">
 
               {!user ? (
@@ -66,27 +65,24 @@ export default function Navbar() {
                   {/* Profile */}
                   <button
                     onClick={() => router.push("/profile")}
-                    className="flex items-center gap-2 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
+                    className="flex items-center gap-2 hover:bg-gray-100 rounded-lg transition"
                   >
 
-                    {/* Avatar */}
-                    <div className="w-9 h-9 bg-teal-600 text-white flex items-center justify-center rounded-full font-semibold">
-                      {user.name?.charAt(0).toUpperCase()}
-                    </div>
-
-                    {/* Name */}
-                    <span className="hidden sm:block text-sm font-medium text-gray-700">
-                      {user.name}
-                    </span>
+                    {/* ✅ CLEAN AVATAR (NO BORDER / NO EXTRA WRAP) */}
+                    <img
+                      src="/avatar.png"
+                      alt="profile"
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
 
                   </button>
 
-                  {/* Logout */}
+                  {/*LOGOUT ICON ONLY */}
                   <button
                     onClick={logout}
-                    className="px-3 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600 transition"
+                    className="p-2 hover:bg-red-50 rounded-lg transition"
                   >
-                    Logout
+                    <LogOut className="w-7 h-7 text-red-500" />
                   </button>
 
                 </div>
@@ -129,8 +125,6 @@ export default function Navbar() {
         </div>
 
       </nav>
-
-      {/* Modals */}
 
       <LoginModal
         isOpen={loginOpen}
