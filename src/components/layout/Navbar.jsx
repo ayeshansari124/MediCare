@@ -4,9 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Stethoscope, LogOut } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
-import LoginModal from "./modals/LoginModal";
-import RegisterModal from "./modals/RegisterModal";
+import { useAuth } from "../../context/AuthContext";
+import LoginModal from "../modals/LoginModal";
+import RegisterModal from "../modals/RegisterModal";
 
 export default function Navbar() {
 

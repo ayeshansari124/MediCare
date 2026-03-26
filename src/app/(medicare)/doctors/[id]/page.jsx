@@ -2,213 +2,186 @@
 
 import { useEffect, useState, use } from "react";
 import toast from "react-hot-toast";
-import { useAuth } from "../../../../context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
+import { Phone, Clock, User, IndianRupee } from "lucide-react";
 
 export default function DoctorDetailPage({ params }) {
+    const { id } = use(params);
+    const { user } = useAuth();
 
-  const { id } = use(params);
-  const { user } = useAuth();
+    const [doctor, setDoctor] = useState(null);
+    const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
 
-  const [doctor, setDoctor] = useState(null);
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+    const fetchDoctor = async () => {
+        const res = await fetch(`/api/doctors/${id}`);
+        const data = await res.json();
+        setDoctor(data.doctor);
+    };
 
-  const fetchDoctor = async () => {
+    useEffect(() => {
+        fetchDoctor();
+    }, [id]);
 
-    const res = await fetch(`/api/doctors/${id}`);
-    const data = await res.json();
+    const bookAppointment = async () => {
+        if (!date || !time) {
+            return toast.error("Select date and time");
+        }
 
-    setDoctor(data.doctor);
+        const bookingTime = new Date(`${date}T${time}`);
 
-  };
+        const res = await fetch("/api/appointments", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                doctorId: doctor.id,
+                bookingTime
+            })
+        });
 
-  useEffect(() => {
-    fetchDoctor();
-  }, [id]);
+        const data = await res.json();
 
-  const bookAppointment = async () => {
+        if (!res.ok) toast.error(data.message);
+        else {
+            toast.success("Appointment booked");
+            setDate("");
+            setTime("");
+        }
+    };
 
-    if (!date || !time) {
-      return toast.error("Select date and time");
-    }
+    if (!doctor) return null;
 
-    const bookingTime = new Date(`${date}T${time}`);
+    return (
+        <div className="bg-gray-50 min-h-screen py-15 px-6">
+            <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20">
 
-    const res = await fetch("/api/appointments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        doctorId: doctor.id,
-        bookingTime
-      })
-    });
+                <div className="space-y-12">
+                    <div className="relative">
+                        <img
+                            src={doctor.profileImage || "/doctor-placeholder.png"}
+                            className="w-full h-120 object-cover rounded-3xl shadow-lg"
+                        />
+                        <div
+                            className={`absolute bottom-4 right-4 px-5 py-2 rounded-full text-base font-semibold shadow-md ${doctor.available ? "bg-green-500 text-white" : "bg-red-500 text-white"
+                                }`}
+                        >
+                            {doctor.available ? "Available" : "Unavailable"}
+                        </div>
+                    </div>
 
-    const data = await res.json();
+                    <div>
+                        <h1 className="text-3xl font-bold text-gray-900">
+                            Dr. {doctor.name}
+                        </h1>
+                        <p className="text-2xl font-semibold text-gray-600 mt-3">
+                            {doctor.degree}
+                        </p>
+                        <p className="text-xl text-teal-600 mt-2 font-bold">
+                            {doctor.specialization}
+                        </p>
+                    </div>
 
-    if (!res.ok) {
-      toast.error(data.message);
-    } else {
-      toast.success("Appointment booked");
-      setDate("");
-      setTime("");
-    }
+                    <div className="space-y-8 text-2xl">
+                        <div className="flex items-start gap-4">
+                            <Phone className="text-teal-600 mt-1" />
+                            <div>
+                                <p className="text-gray-500 font-semibold">Phone</p>
+                                <p className="text-gray-900 font-bold">{doctor.phone}</p>
+                            </div>
+                        </div>
 
-  };
+                        <div className="flex items-start gap-4">
+                            <Clock className="text-teal-600 mt-1" />
+                            <div>
+                                <p className="text-gray-500 font-semibold">Experience</p>
+                                <p className="text-gray-900 font-bold">
+                                    {doctor.experience} years
+                                </p>
+                            </div>
+                        </div>
 
-  if (!doctor) return null;
+                        <div className="flex items-start gap-4">
+                            <IndianRupee className="text-teal-600 mt-1" />
+                            <div>
+                                <p className="text-gray-500 font-semibold">Consultation Fee</p>
+                                <p className="text-gray-900 font-bold">₹{doctor.fees}</p>
+                            </div>
+                        </div>
 
-  return (
-    <div className="max-w-4xl mx-auto px-6 py-10 space-y-10">
+                        <div className="flex items-start gap-4">
+                            <User className="text-teal-600 mt-1" />
+                            <div>
+                                <p className="text-gray-500 font-semibold">Gender</p>
+                                <p className="text-gray-900 font-bold capitalize">
+                                    {doctor.gender}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-      {/* Doctor Profile */}
+                    {doctor.about && (
+                        <div className="text-gray-800 font-semibold text-xl leading-relaxed">
+                            {doctor.about}
+                        </div>
+                    )}
+                </div>
 
-      <div className="bg-white rounded-xl shadow p-6">
+                <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 h-fit lg:sticky lg:top-16">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">
+                        Book Appointment
+                    </h2>
 
-        <div className="flex flex-col md:flex-row gap-6">
+                    {!user && (
+                        <div>
+                            <button className="w-full py-3 sm:py-4 bg-gray-900 text-white rounded-xl sm:rounded-2xl text-base sm:text-lg hover:bg-black transition">
+                                Login to Continue
+                            </button>
+                        </div>
+                    )}
 
-          <img
-            src={doctor.profileImage || "/doctor-placeholder.png"}
-            className="w-48 h-48 object-cover rounded-lg border"
-          />
+                    {user && !doctor.available && (
+                        <div className="text-red-500 text-base sm:text-lg font-semibold">
+                            Doctor is currently unavailable
+                        </div>
+                    )}
 
-          <div className="space-y-2 text-sm">
+                    {user && doctor.available && (
+                        <div className="space-y-5 sm:space-y-6">
+                            <div>
+                                <label className="text-sm sm:text-base text-gray-600">
+                                    Select Date
+                                </label>
+                                <input
+                                    type="date"
+                                    value={date}
+                                    onChange={(e) => setDate(e.target.value)}
+                                    className="mt-2 w-full px-4 py-3 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500 text-base sm:text-lg"
+                                />
+                            </div>
 
-            <div>
-              <span className="font-semibold text-gray-700">Name:</span>{" "}
-              Dr. {doctor.name}
+                            <div>
+                                <label className="text-sm sm:text-base text-gray-600">
+                                    Select Time
+                                </label>
+                                <input
+                                    type="time"
+                                    value={time}
+                                    onChange={(e) => setTime(e.target.value)}
+                                    className="mt-2 w-full px-4 py-3 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500 text-base sm:text-lg"
+                                />
+                            </div>
+
+                            <button
+                                onClick={bookAppointment}
+                                className="w-full py-3 sm:py-4 bg-teal-600 text-white rounded-xl sm:rounded-2xl text-base sm:text-lg font-semibold hover:bg-teal-700 transition active:scale-[0.98]"
+                            >
+                                Confirm Appointment
+                            </button>
+                        </div>
+                    )}
+                </div>
+
             </div>
-
-            <div>
-              <span className="font-semibold text-gray-700">Degree:</span>{" "}
-              {doctor.degree}
-            </div>
-
-            <div>
-              <span className="font-semibold text-gray-700">Specialization:</span>{" "}
-              {doctor.specialization}
-            </div>
-
-            <div>
-              <span className="font-semibold text-gray-700">Gender:</span>{" "}
-              {doctor.gender}
-            </div>
-
-            <div>
-              <span className="font-semibold text-gray-700">Phone:</span>{" "}
-              {doctor.phone}
-            </div>
-
-            <div>
-              <span className="font-semibold text-gray-700">Experience:</span>{" "}
-              {doctor.experience} yrs
-            </div>
-
-            <div>
-              <span className="font-semibold text-gray-700">Fees:</span>{" "}
-              ₹{doctor.fees}
-            </div>
-
-            <div>
-              <span className="font-semibold text-gray-700">Availability:</span>{" "}
-              <span
-                className={`ml-1 ${
-                  doctor.available
-                    ? "text-green-600"
-                    : "text-red-500"
-                }`}
-              >
-                {doctor.available ? "Available" : "Unavailable"}
-              </span>
-            </div>
-
-          </div>
-
         </div>
-
-        {/* About */}
-
-        {doctor.about && (
-          <div className="mt-6 text-sm">
-            <span className="font-semibold text-gray-700">
-              About:
-            </span>
-            <p className="mt-1 text-gray-700 leading-relaxed">
-              {doctor.about}
-            </p>
-          </div>
-        )}
-
-      </div>
-
-      {/* Booking Section */}
-
-      <div className="bg-white rounded-xl shadow p-6">
-
-        <h2 className="text-lg font-semibold mb-4">
-          Book Appointment
-        </h2>
-
-        {!user ? (
-
-          <div className="text-gray-500 text-sm">
-            Please login to book an appointment.
-          </div>
-
-        ) : !doctor.available ? (
-
-          <div className="text-red-500 text-sm">
-            Doctor currently unavailable.
-          </div>
-
-        ) : (
-
-          <div className="space-y-4 max-w-md">
-
-            <div>
-
-              <label className="text-sm text-gray-600">
-                Select Date
-              </label>
-
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="mt-1 w-full border rounded-lg px-3 py-2"
-              />
-
-            </div>
-
-            <div>
-
-              <label className="text-sm text-gray-600">
-                Select Time
-              </label>
-
-              <input
-                type="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className="mt-1 w-full border rounded-lg px-3 py-2"
-              />
-
-            </div>
-
-            <button
-              onClick={bookAppointment}
-              className="w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700 transition"
-            >
-              Confirm Appointment
-            </button>
-
-          </div>
-
-        )}
-
-      </div>
-
-    </div>
-  );
+    );
 }

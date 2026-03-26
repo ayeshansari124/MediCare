@@ -1,4 +1,4 @@
-import Navbar from "../../components/Navbar";
+import Navbar from "@/components/layout/Navbar";
 
 export default function SiteLayout({ children }) {
   return (
@@ -6,7 +6,7 @@ export default function SiteLayout({ children }) {
 
       <Navbar />
 
-      <main className="flex-grow">
+      <main className="grow">
         {children}
       </main>
     </div>

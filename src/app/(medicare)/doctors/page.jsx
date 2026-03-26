@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function DoctorsPage() {
-
   const [doctors, setDoctors] = useState([]);
   const router = useRouter();
 
@@ -19,93 +18,95 @@ export default function DoctorsPage() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
 
-      <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-gray-800">
+      {/* HEADER */}
+      <div className="mb-12 max-w-2xl">
+        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
           Our Doctors
         </h1>
-        <p className="text-gray-500 mt-2">
-          Experienced specialists ready to help you
+
+        <p className="text-gray-500 mt-4 text-lg leading-relaxed">
+          Meet our experienced and qualified doctors dedicated to providing
+          trusted and personalized medical care.
         </p>
       </div>
 
-      <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {/* GRID */}
+      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 
         {doctors.map((doctor) => (
 
           <div
             key={doctor.id}
             onClick={() => router.push(`/doctors/${doctor.id}`)}
-            className="bg-white rounded-xl shadow-md hover:shadow-lg transition cursor-pointer overflow-hidden"
+            className="group bg-white rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden"
           >
 
-            {/* Image */}
-            <div className="h-60 bg-gray-100 flex items-center justify-center">
+            {/* IMAGE */}
+            <div className="relative h-78 sm:h-52 overflow-hidden">
               <img
                 src={doctor.profileImage || "/doctor-placeholder.png"}
-                className="h-full w-full object-cover"
+                className="w-full h-full object-cover object-top group-hover:scale-105 transition duration-300"
               />
-            </div>
 
-            {/* Info */}
-            <div className="p-5 space-y-2 text-sm">
-          
-          
-              <div>
-                <span className="font-semibold text-gray-700">Name:</span>{" "}
-                <span className="text-gray-800 font-medium">
-                  Dr. {doctor.name}
-                </span>
-              </div>
-              
-              <div>
-                <span className="font-semibold text-gray-700">Degree:</span>{" "}
-                <span className="text-gray-600">{doctor.degree}</span>
-              </div>
-
-              <div>
-                <span className="font-semibold text-gray-700">Specialization:</span>{" "}
-                <span className="text-gray-600">{doctor.specialization}</span>
-              </div>
-
-              <div>
-                <span className="font-semibold text-gray-700">Experience:</span>{" "}
-                <span className="text-gray-600">
-                  {doctor.experience} yrs
-                </span>
-              </div>
-
-              <div>
-                <span className="font-semibold text-gray-700">Fees:</span>{" "}
-                <span className="text-teal-600 font-semibold">
-                  ₹{doctor.fees}
-                </span>
-              </div>
-
-              <div className="pt-2">
-                <span className="font-semibold text-gray-700">
-                  Availability:
-                </span>{" "}
-                <span
-                  className={`text-xs px-2 py-1 rounded-full ml-1 ${
-                    doctor.available
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-600"
+              {/* Availability*/}
+              <div
+                className={`absolute bottom-3 right-3 px-3 py-1 rounded-full text-lg font-semibold ${doctor.available
+                  ? "bg-green-500 text-white"
+                  : "bg-red-500 text-white"
                   }`}
-                >
-                  {doctor.available ? "Available" : "Unavailable"}
-                </span>
+              >
+                {doctor.available ? "Available" : "Unavailable"}
               </div>
-
             </div>
 
+            {/* CONTENT */}
+            <div className="p-4">
+
+              <h2 className="text-2xl font-bold text-gray-900">
+                Dr. {doctor.name}
+              </h2>
+
+              <p className="text-lg font-semibold text-gray-700 mb-3">
+                {doctor.degree}
+              </p>
+
+              {/* GRID */}
+              <div className="grid grid-cols-2 gap-y-2 text-sm">
+
+                <div>
+                  <p className="text-gray-400 font-semibold text-lg">Specialization</p>
+                  <p className="text-gray-800 font-bold font-xl">
+                    {doctor.specialization}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-gray-400 font-semibold text-lg">Experience</p>
+                  <p className="text-gray-800 font-bold font-xl">
+                    {doctor.experience} yrs
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-gray-400 font-semibold text-lg">Fees</p>
+                  <p className="text-teal-600 font-bold">
+                    ₹{doctor.fees}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-gray-400 font-semibold text-lg">Phone</p>
+                  <p className="text-gray-800 font-bold font-xl">
+                    {doctor.phone}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-
         ))}
-
       </div>
-
     </div>
   );
 }
