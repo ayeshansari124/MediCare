@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(req, { params }) {
 
-  const { id } = await params;
+  const { id } = params; // ✅ FIXED
 
   const doctor = await prisma.doctor.findUnique({
     where: { id }
