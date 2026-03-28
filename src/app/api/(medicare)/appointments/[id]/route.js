@@ -3,18 +3,22 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
-export async function PATCH(req, context) {
+export async function PATCH(req, { params }) {
 
-  const { id } = await context.params;
+  const { id } = params; // ✅ FIXED (NO await)
 
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
+  const token = cookies().get("token")?.value; // ✅ FIXED (NO await)
 
   if (!token) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch {
+    return NextResponse.json({ message: "Invalid token" }, { status: 401 });
+  }
 
   const body = await req.json();
 
@@ -30,7 +34,7 @@ export async function PATCH(req, context) {
     return NextResponse.json({ message: "Not found" }, { status: 404 });
   }
 
-  // ✅ FIX: map user → patient
+  // ✅ USER → PATIENT mapping (correct)
   const patient = await prisma.patient.findUnique({
     where: { userId: decoded.id }
   });
