@@ -1,3 +1,5 @@
+// src/app/api/appointments/[id]/route.js
+
 import { prisma } from "../../../../../lib/prisma";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
@@ -5,9 +7,9 @@ import { cookies } from "next/headers";
 
 export async function PATCH(req, { params }) {
 
-  const { id } = params; // ✅ FIXED (NO await)
+  const { id } = params; // ✅ NO await
 
-  const token = cookies().get("token")?.value; // ✅ FIXED (NO await)
+  const token = cookies().get("token")?.value; // ✅ NO await
 
   if (!token) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -34,7 +36,6 @@ export async function PATCH(req, { params }) {
     return NextResponse.json({ message: "Not found" }, { status: 404 });
   }
 
-  // ✅ USER → PATIENT mapping (correct)
   const patient = await prisma.patient.findUnique({
     where: { userId: decoded.id }
   });
