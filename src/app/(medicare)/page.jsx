@@ -18,7 +18,6 @@ import {
 export default function Home() {
 
   // HERO SLIDER
-
   const slides = [
     {
       image: "/images/slide1.jpg",

@@ -249,7 +249,7 @@ export default function CreateDoctorModal({
 
                 <label className="flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 rounded-lg py-6 cursor-pointer hover:border-blue-500 transition">
 
-                  <UploadCloud size={18} className="text-gray-500"/>
+                  <UploadCloud size={18} className="text-gray-500" />
 
                   <span className="text-sm text-gray-500">
                     Upload doctor image
@@ -308,8 +308,8 @@ export default function CreateDoctorModal({
                 ? "Updating Doctor..."
                 : "Creating Doctor..."
               : editMode
-              ? "Update Doctor"
-              : "Create Doctor"}
+                ? "Update Doctor"
+                : "Create Doctor"}
           </button>
 
         </form>

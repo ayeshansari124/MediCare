@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Stethoscope, LogOut } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import LoginModal from "../modals/LoginModal";
 import RegisterModal from "../modals/RegisterModal";
 
@@ -67,8 +67,6 @@ export default function Navbar() {
                     onClick={() => router.push("/profile")}
                     className="flex items-center gap-2 hover:bg-gray-100 rounded-lg transition"
                   >
-
-                    {/* ✅ CLEAN AVATAR (NO BORDER / NO EXTRA WRAP) */}
                     <img
                       src="/avatar.png"
                       alt="profile"
@@ -77,7 +75,6 @@ export default function Navbar() {
 
                   </button>
 
-                  {/*LOGOUT ICON ONLY */}
                   <button
                     onClick={logout}
                     className="p-2 hover:bg-red-50 rounded-lg transition"

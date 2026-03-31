@@ -87,7 +87,7 @@ export default function AdminDashboard() {
     <div className="max-w-7xl mx-auto p-6 space-y-8">
 
       <h1 className="text-2xl font-semibold">
-         Summary
+        Summary
       </h1>
 
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
               <div
                 className={`p-3 rounded-lg ${card.color}`}
               >
-                <Icon size={24}/>
+                <Icon size={24} />
               </div>
 
             </div>

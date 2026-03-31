@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -69,7 +69,7 @@ export default function LoginModal({
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
-      <div className="relative bg-white w-[400px] rounded-2xl shadow-2xl p-8">
+      <div className="relative bg-white w-100 rounded-2xl shadow-2xl p-8">
 
         <button
           onClick={onClose}

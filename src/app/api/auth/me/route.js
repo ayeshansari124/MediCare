@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-import { prisma } from "../../../../lib/prisma";
-import { verifyToken } from "../../../../lib/jwt";
+import { prisma } from "@/lib/prisma";
+import { verifyToken } from "@/lib/jwt";
 
 export async function GET() {
   try {
@@ -24,7 +24,6 @@ export async function GET() {
     });
 
     return NextResponse.json({ user });
-
   } catch {
     return NextResponse.json({ user: null }, { status: 401 });
   }

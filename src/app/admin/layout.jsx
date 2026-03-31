@@ -1,5 +1,5 @@
-import AdminNavbar from "../../components/layout/AdminNavbar";
-import Footer from "../../components/layout/Footer";
+import AdminNavbar from "@/components/layout/AdminNavbar";
+import Footer from "@/components/layout/Footer";
 
 export default function AdminLayout({ children }) {
   return (
@@ -7,7 +7,7 @@ export default function AdminLayout({ children }) {
 
       <AdminNavbar />
 
-      <main className="flex-grow">
+      <main className="grow">
         {children}
       </main>
 

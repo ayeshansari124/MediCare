@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { prisma } from "../../../../lib/prisma";
-import { signToken } from "../../../../lib/jwt";
+import { prisma } from "@/lib/prisma";
+import { signToken } from "@/lib/jwt";
 
 export async function POST(req) {
   try {
@@ -11,7 +11,7 @@ export async function POST(req) {
     if (!email || !password) {
       return NextResponse.json(
         { message: "Email and password are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -22,7 +22,7 @@ export async function POST(req) {
     if (!user) {
       return NextResponse.json(
         { message: "Invalid credentials" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -31,7 +31,7 @@ export async function POST(req) {
     if (!isMatch) {
       return NextResponse.json(
         { message: "Invalid credentials" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -58,12 +58,11 @@ export async function POST(req) {
         role: user.role,
       },
     });
-
   } catch (error) {
     console.error("LOGIN ERROR:", error);
     return NextResponse.json(
       { message: "Something went wrong" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

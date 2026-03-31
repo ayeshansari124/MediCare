@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -70,7 +70,7 @@ export default function RegisterModal({
       toast.success("Account created successfully");
 
       onClose();
-      router.push("/"); // Patient always lands on homepage
+      router.push("/");
 
       setForm({
         name: "",
@@ -94,7 +94,7 @@ export default function RegisterModal({
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
 
-      <div className="relative bg-white w-[420px] rounded-2xl shadow-2xl p-8">
+      <div className="relative bg-white w-105 rounded-2xl shadow-2xl p-8">
 
         <button
           onClick={onClose}

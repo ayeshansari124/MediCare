@@ -1,4 +1,4 @@
-import { prisma } from "../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 
 export default async function PatientDetailPage({ params }) {
@@ -131,14 +131,13 @@ export default async function PatientDetailPage({ params }) {
                     <td>
 
                       <span className={`px-2 py-1 text-xs rounded-full
-                        ${
-                          appt.status === "PENDING"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : appt.status === "CONFIRMED"
+                        ${appt.status === "PENDING"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : appt.status === "CONFIRMED"
                             ? "bg-blue-100 text-blue-700"
                             : appt.status === "COMPLETED"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-red-100 text-red-700"
                         }`}>
 
                         {appt.status}

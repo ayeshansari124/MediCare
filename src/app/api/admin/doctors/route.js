@@ -1,10 +1,9 @@
-import { prisma } from "../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import cloudinary from "../../../../lib/cloudinary";
+import cloudinary from "@/lib/cloudinary";
 
 export async function POST(req) {
-
   const formData = await req.formData();
 
   const name = formData.get("name");
@@ -22,19 +21,16 @@ export async function POST(req) {
   let imageUrl = null;
 
   if (imageFile && imageFile.size > 0) {
-
     const bytes = await imageFile.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
     const upload = await new Promise((resolve, reject) => {
-
       cloudinary.uploader
         .upload_stream({ folder: "doctors" }, (err, result) => {
           if (err) reject(err);
           resolve(result);
         })
         .end(buffer);
-
     });
 
     imageUrl = upload.secure_url;
@@ -74,9 +70,8 @@ export async function POST(req) {
     },
   });
 }
-export async function GET(){
-
+export async function GET() {
   const doctors = await prisma.doctor.findMany();
 
-  return NextResponse.json({doctors});
+  return NextResponse.json({ doctors });
 }

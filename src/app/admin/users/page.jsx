@@ -96,7 +96,7 @@ export default function AdminUsersPage() {
                   </td>
 
                   <td className="pr-4 text-right text-gray-400">
-                    <ChevronRight size={18}/>
+                    <ChevronRight size={18} />
                   </td>
 
                 </tr>

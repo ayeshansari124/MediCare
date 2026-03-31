@@ -28,7 +28,7 @@ export default function ContactPage() {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16">
 
-          {/* LEFT - INFO CARDS */}
+          {/*INFO CARDS */}
           <div className="space-y-6">
 
             {/* CARD */}
@@ -81,14 +81,13 @@ export default function ContactPage() {
                 </p>
               </div>
             </div>
-
           </div>
 
-          {/* RIGHT - MAP + QR */}
+          {/* MAP + QR */}
           <div className="space-y-8">
 
             {/* MAP */}
-            <div className="h-[320px] rounded-2xl overflow-hidden shadow-md border border-gray-200">
+            <div className="h-80 rounded-2xl overflow-hidden shadow-md border border-gray-200">
               <iframe
                 src="https://www.google.com/maps?q=Al+Moin+Hospital+Bhiwandi&output=embed"
                 width="100%"
@@ -116,12 +115,9 @@ export default function ContactPage() {
                 </p>
               </div>
             </div>
-
           </div>
-
         </div>
       </section>
-
     </main>
   );
 }

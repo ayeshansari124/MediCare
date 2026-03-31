@@ -1,15 +1,12 @@
-// src/app/api/appointments/[id]/route.js
-
-import { prisma } from "../../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
 export async function PATCH(req, { params }) {
+  const { id } = params;
 
-  const { id } = params; // ✅ NO await
-
-  const token = cookies().get("token")?.value; // ✅ NO await
+  const token = cookies().get("token")?.value;
 
   if (!token) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -29,7 +26,7 @@ export async function PATCH(req, { params }) {
   }
 
   const appointment = await prisma.appointment.findUnique({
-    where: { id }
+    where: { id },
   });
 
   if (!appointment) {
@@ -37,7 +34,7 @@ export async function PATCH(req, { params }) {
   }
 
   const patient = await prisma.patient.findUnique({
-    where: { userId: decoded.id }
+    where: { userId: decoded.id },
   });
 
   if (!patient) {
@@ -50,7 +47,7 @@ export async function PATCH(req, { params }) {
 
   const updated = await prisma.appointment.update({
     where: { id },
-    data: { status: body.status }
+    data: { status: body.status },
   });
 
   return NextResponse.json({ appointment: updated });

@@ -1,4 +1,4 @@
-import { prisma } from "../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
@@ -6,28 +6,13 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const {
-      name,
-      gender,
-      dob,
-      phone,
-      address,
-      email,
-      password,
-    } = await req.json();
+    const { name, gender, dob, phone, address, email, password } =
+      await req.json();
 
-    if (
-      !name ||
-      !gender ||
-      !dob ||
-      !phone ||
-      !address ||
-      !email ||
-      !password
-    ) {
+    if (!name || !gender || !dob || !phone || !address || !email || !password) {
       return NextResponse.json(
         { message: "All fields are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -38,7 +23,7 @@ export async function POST(req) {
     if (existingUser) {
       return NextResponse.json(
         { message: "User already exists" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -67,7 +52,7 @@ export async function POST(req) {
     const token = jwt.sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "365d" }
+      { expiresIn: "365d" },
     );
 
     const cookieStore = await cookies();
@@ -89,12 +74,8 @@ export async function POST(req) {
         patient: user.patient,
       },
     });
-
   } catch (error) {
     console.error("REGISTER ERROR:", error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

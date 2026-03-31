@@ -1,18 +1,16 @@
-import { prisma } from "../../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-
   const appointments = await prisma.appointment.findMany({
     include: {
       patient: true,
-      doctor: true
+      doctor: true,
     },
     orderBy: {
-      createdAt: "desc"
-    }
+      createdAt: "desc",
+    },
   });
 
   return NextResponse.json({ appointments });
-
 }

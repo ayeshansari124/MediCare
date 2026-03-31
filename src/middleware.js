@@ -13,15 +13,11 @@ export async function middleware(req) {
   try {
     const { payload } = await jwtVerify(token, secret);
 
-    if (
-      req.nextUrl.pathname.startsWith("/admin") &&
-      payload.role !== "ADMIN"
-    ) {
+    if (req.nextUrl.pathname.startsWith("/admin") && payload.role !== "ADMIN") {
       return NextResponse.redirect(new URL("/", req.url));
     }
 
     return NextResponse.next();
-
   } catch (error) {
     return NextResponse.redirect(new URL("/", req.url));
   }

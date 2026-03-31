@@ -4,7 +4,7 @@ import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
-import CreateDoctorModal from "../../../../components/modals/CreateDoctorModal";
+import CreateDoctorModal from "@/components/modals/CreateDoctorModal";
 
 export default function DoctorDetailPage({ params }) {
 
@@ -12,29 +12,29 @@ export default function DoctorDetailPage({ params }) {
 
   const { id } = use(params);
 
-const [doctor, setDoctor] = useState(null);
-const [editOpen, setEditOpen] = useState(false);
+  const [doctor, setDoctor] = useState(null);
+  const [editOpen, setEditOpen] = useState(false);
 
-const fetchDoctor = async () => {
+  const fetchDoctor = async () => {
 
-  const res = await fetch(`/api/admin/doctors/${id}`);
-  const data = await res.json();
+    const res = await fetch(`/api/admin/doctors/${id}`);
+    const data = await res.json();
 
-  setDoctor(data.doctor);
+    setDoctor(data.doctor);
 
-};
+  };
 
-useEffect(() => {
-  if (id) fetchDoctor();
-}, [id]);
+  useEffect(() => {
+    if (id) fetchDoctor();
+  }, [id]);
 
-if (!doctor) {
-  return (
-    <div className="p-10 text-center text-gray-500">
-      Loading doctor...
-    </div>
-  );
-}
+  if (!doctor) {
+    return (
+      <div className="p-10 text-center text-gray-500">
+        Loading doctor...
+      </div>
+    );
+  }
 
   const toggleAvailability = async () => {
 
@@ -103,14 +103,12 @@ if (!doctor) {
 
           <button
             onClick={toggleAvailability}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${
-              doctor.available ? "bg-green-500" : "bg-gray-300"
-            }`}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${doctor.available ? "bg-green-500" : "bg-gray-300"
+              }`}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
-                doctor.available ? "translate-x-6" : "translate-x-1"
-              }`}
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${doctor.available ? "translate-x-6" : "translate-x-1"
+                }`}
             />
           </button>
 
@@ -120,7 +118,7 @@ if (!doctor) {
             onClick={() => setEditOpen(true)}
             className="p-2 hover:bg-gray-100 rounded-lg"
           >
-            <Pencil size={18} className="text-blue-600"/>
+            <Pencil size={18} className="text-blue-600" />
           </button>
 
           {/* Delete */}
@@ -129,7 +127,7 @@ if (!doctor) {
             onClick={deleteDoctor}
             className="p-2 hover:bg-gray-100 rounded-lg"
           >
-            <Trash2 size={18} className="text-red-600"/>
+            <Trash2 size={18} className="text-red-600" />
           </button>
 
         </div>

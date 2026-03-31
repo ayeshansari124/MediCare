@@ -4,11 +4,11 @@ import { HeartHandshake, Eye, Users, Award } from "lucide-react";
 export default function AboutPage() {
   return (
     <main>
-      {/* Premium Hero Section */}
+      {/*Hero Section */}
       <section className="py-10 bg-linear-to-br from-white to-teal-50">
         <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
 
-          {/* LEFT - Content */}
+          {/* Content */}
           <div>
             <p className="text-2xl text-teal-600 font-semibold uppercase tracking-wider">
               About Al-Moin Hospital
