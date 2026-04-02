@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🏥 CareFlow – Full-Stack Hospital Management Platform
 
-## Getting Started
+A modern full-stack hospital management system to **manage doctors, patients, and appointments seamlessly**, with real-time availability tracking, secure authentication, and an intuitive admin dashboard.
+Built using **Next.js, PostgreSQL (Neon), Prisma, and JWT cookies**, with a strong focus on **scalability and real-world usability**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🩺 Doctor Management
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+* Add, edit, and delete doctors (Admin)
+* Profile with specialization, experience, fees, and availability
+* Toggle doctor availability in real time
+* Doctor-wise appointment tracking
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+### 👤 Patient System
 
-To learn more about Next.js, take a look at the following resources:
+* Secure authentication (register / login / logout)
+* Persistent sessions using **HTTP-only JWT cookies**
+* Profile management (name, phone, DOB, gender, address)
+* View and manage personal appointments
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 📅 Appointment System
 
-## Deploy on Vercel
+* Book appointments with date & time selection
+* Real-time doctor availability check
+* Appointment status tracking:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  * Pending
+  * Confirmed
+  * Cancelled
+  * Completed
+* Patients can cancel pending appointments
+* Admin can manage and update appointment statuses
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+### 🛠 Admin Dashboard
+
+* Overview of total doctors, patients, users, and appointments
+* Manage all doctors and users
+* View all appointments in one place
+* Status-based filtering with visual indicators
+
+---
+
+### 🌐 Frontend Architecture
+
+* Built with **Next.js App Router**
+* Tailwind CSS for responsive UI
+* Component-based modular design
+* Context API for global authentication state
+* Optimized for both desktop and mobile usage
+* Deployed on **Vercel**
+
+---
+
+### 🧠 Backend Architecture
+
+* API routes using **Next.js server functions**
+* **Prisma ORM** for database operations
+* **PostgreSQL (Neon)** as serverless database
+* JWT authentication with cookie-based sessions
+* Role-based access (Admin / Doctor / Patient)
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+
+* Next.js (App Router)
+* Tailwind CSS
+* Context API
+* React Hooks
+
+### Backend
+
+* Next.js API Routes
+* Prisma ORM
+* PostgreSQL (Neon)
+* JWT (cookie-based authentication)
+
+### Deployment
+
+* Vercel – full-stack deployment
+* Neon – serverless database
+
+---
+
+## 📚 Learnings
+
+* Building a **full-stack production-ready system** using Next.js App Router
+* Implementing **role-based access control** (Admin / Patient / Doctor)
+* Managing **secure authentication using HTTP-only cookies**
+* Handling **Prisma + Neon deployment issues in production**
+* Designing clean and scalable **API architecture inside Next.js**
+* Creating responsive, user-friendly healthcare UI systems
+* Debugging real-world deployment and environment issues
+
+---
+
+### Built with ❤️ by Ayesha
